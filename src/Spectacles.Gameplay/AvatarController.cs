@@ -27,8 +27,20 @@ public sealed class AvatarController
     Remainder = new Float2(nextRemainderX, nextRemainderY);
 
     Body.MoveH(world, moveX);
-    Body.MoveV(world, moveY);
+    var verticalResult = Body.MoveV(world, moveY);
+
+    if (verticalResult.Blocked && verticalResult.Direction == CollisionDirection.Down)
+    {
+      StopFalling();
+    }
+
     LastSurfaceState = Body.ReadSurfaceState(world);
+  }
+
+  private void StopFalling()
+  {
+    Velocity = new Float2(Velocity.X, 0f);
+    Remainder = new Float2(Remainder.X, 0f);
   }
 
   private static int ExtractWholePixels(float amount, out float remiander)

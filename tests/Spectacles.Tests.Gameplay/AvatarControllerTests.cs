@@ -201,4 +201,46 @@ public sealed class AvatarControllerTests
     Assert.Equal(new Int2(4, 5), body.Position);
     Assert.Equal(new Float2(0f, 0.5f), controller.Remainder);
   }
+
+  [Fact]
+  public void FixedUpdate_WhenFallingIntoFloorClearsVerticalVelocity()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    world.SetSolid(tileX: 0, tileY: 1, solid: true);
+    var body = new KinematicBody(new Int2(4, 8), new Int2(8, 8));
+    var controller = new AvatarController(body);
+
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+
+    Assert.Equal(new Float2(0f, 0f), controller.Velocity);
+  }
+
+  [Fact]
+  public void FixedUpdate_WhenFallingIntoFloorClearsVerticalRemainder()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    world.SetSolid(tileX: 0, tileY: 1, solid: true);
+    var body = new KinematicBody(new Int2(4, 8), new Int2(8, 8));
+    var controller = new AvatarController(body);
+
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+
+    Assert.Equal(new Float2(0f, 0f), controller.Remainder);
+  }
+
+  [Fact]
+  public void FixedUpdate_WhenFallingIntoFloorKeepsPositionAboveFloor()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    world.SetSolid(tileX: 0, tileY: 1, solid: true);
+    var body = new KinematicBody(new Int2(4, 8), new Int2(8, 8));
+    var controller = new AvatarController(body);
+
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+
+    Assert.Equal(new Int2(4, 8), body.Position);
+  }
 }
