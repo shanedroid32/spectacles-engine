@@ -125,4 +125,30 @@ public sealed class KinematicBodyMovementTests
 
     Assert.Equal(CollisionDirection.Down, result.Direction);
   }
+
+  [Fact]
+  public void MoveH_WhenBlockedRunsCallbackWithResult()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    world.SetSolid(tileX: 1, tileY: 0, solid: true);
+    var body = new KinematicBody(new Int2(4, 4), new Int2(8, 8));
+    MoveResult? callbackResult = null;
+
+    var result = body.MoveH(world, amount: 8, onBlocked: hit => callbackResult = hit);
+
+    Assert.Equal(result, callbackResult);
+    Assert.Equal(CollisionDirection.Right, callbackResult?.Direction);
+  }
+
+  [Fact]
+  public void MoveH_WhenUnblockedDoesNotRunCallback()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    var body = new KinematicBody(new Int2(4, 4), new Int2(8, 8));
+    var callbackCount = 0;
+
+    body.MoveH(world, amount: 3, onBlocked: _ => callbackCount++);
+
+    Assert.Equal(0, callbackCount);
+  }
 }

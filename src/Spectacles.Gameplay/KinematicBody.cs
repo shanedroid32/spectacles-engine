@@ -17,19 +17,30 @@ public sealed class KinematicBody
 
   public RectI Bounds => new(Position.x, Position.y, Size.x, Size.y);
 
-  public MoveResult MoveH(IKinematicWorld world, int amount)
+  public MoveResult MoveH(
+      IKinematicWorld world,
+      int amount,
+      CollisionCallback? onBlocked = null)
   {
     var direction = amount < 0 ? CollisionDirection.Left : CollisionDirection.Right;
-    return MoveByPixels(world, amount, new Int2(Math.Sign(amount), 0), direction);
+    return MoveByPixels(world, amount, new Int2(Math.Sign(amount), 0), direction, onBlocked);
   }
 
-  public MoveResult MoveV(IKinematicWorld world, int amount)
+  public MoveResult MoveV(
+      IKinematicWorld world,
+      int amount,
+      CollisionCallback? onBlocked = null)
   {
     var direction = amount < 0 ? CollisionDirection.Up : CollisionDirection.Down;
-    return MoveByPixels(world, amount, new Int2(0, Math.Sign(amount)), direction);
+    return MoveByPixels(world, amount, new Int2(0, Math.Sign(amount)), direction, onBlocked);
   }
 
-  private MoveResult MoveByPixels(IKinematicWorld world, int amount, Int2 step, CollisionDirection blockedDirection)
+  private MoveResult MoveByPixels(
+      IKinematicWorld world,
+      int amount,
+      Int2 step,
+      CollisionDirection blockedDirection,
+      CollisionCallback? onBlocked)
   {
     var moved = 0;
 
@@ -39,12 +50,21 @@ public sealed class KinematicBody
       var nextBounds = new RectI(nextPosition.x, nextPosition.y, Size.x, Size.y);
 
       if (world.OverlapsSolid(nextBounds))
-        return new MoveResult(amount, moved, Blocked: true, blockedDirection);
+      {
+        var result = new MoveResult(
+            amount,
+            moved,
+            Blocked: true,
+            Direction: blockedDirection);
+
+        onBlocked?.Invoke(result);
+        return result;
+      }
 
       Position = nextPosition;
       moved += step.x + step.y;
     }
 
-    return new MoveResult(amount, moved, Blocked: false, CollisionDirection.None);
+    return new MoveResult(amount, moved, Blocked: false, Direction: CollisionDirection.None);
   }
 }
