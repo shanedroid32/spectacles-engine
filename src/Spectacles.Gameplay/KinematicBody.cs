@@ -19,15 +19,17 @@ public sealed class KinematicBody
 
   public MoveResult MoveH(IKinematicWorld world, int amount)
   {
-    return MoveByPixels(world, amount, new Int2(Math.Sign(amount), 0));
+    var direction = amount < 0 ? CollisionDirection.Left : CollisionDirection.Right;
+    return MoveByPixels(world, amount, new Int2(Math.Sign(amount), 0), direction);
   }
 
   public MoveResult MoveV(IKinematicWorld world, int amount)
   {
-    return MoveByPixels(world, amount, new Int2(0, Math.Sign(amount)));
+    var direction = amount < 0 ? CollisionDirection.Up : CollisionDirection.Down;
+    return MoveByPixels(world, amount, new Int2(0, Math.Sign(amount)), direction);
   }
 
-  private MoveResult MoveByPixels(IKinematicWorld world, int amount, Int2 step)
+  private MoveResult MoveByPixels(IKinematicWorld world, int amount, Int2 step, CollisionDirection blockedDirection)
   {
     var moved = 0;
 
@@ -37,12 +39,12 @@ public sealed class KinematicBody
       var nextBounds = new RectI(nextPosition.x, nextPosition.y, Size.x, Size.y);
 
       if (world.OverlapsSolid(nextBounds))
-        return new MoveResult(amount, moved, Blocked: true);
+        return new MoveResult(amount, moved, Blocked: true, blockedDirection);
 
       Position = nextPosition;
       moved += step.x + step.y;
     }
 
-    return new MoveResult(amount, moved, Blocked: false);
+    return new MoveResult(amount, moved, Blocked: false, blockedDirection);
   }
 }
