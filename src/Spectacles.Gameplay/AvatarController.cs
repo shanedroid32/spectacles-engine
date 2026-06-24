@@ -22,9 +22,11 @@ public sealed class AvatarController
     Velocity = new Float2(intent.MoveX * HorizontalSpeed, Velocity.Y);
 
     var moveX = ExtractWholePixels(Remainder.X + Velocity.X, out var nextRemainderX);
-    Remainder = new Float2(nextRemainderX, Remainder.Y);
+    var moveY = ExtractWholePixels(Remainder.Y + Velocity.Y, out var nextRemainderY);
+    Remainder = new Float2(nextRemainderX, nextRemainderY);
 
     Body.MoveH(world, moveX);
+    Body.MoveV(world, moveY);
     LastSurfaceState = Body.ReadSurfaceState(world);
   }
 
