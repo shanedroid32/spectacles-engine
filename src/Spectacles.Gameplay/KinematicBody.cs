@@ -67,4 +67,10 @@ public sealed class KinematicBody
 
     return new MoveResult(amount, moved, Blocked: false, Direction: CollisionDirection.None);
   }
+
+  public bool IsGrounded(IKinematicWorld world)
+  {
+    var probe = new RectI(Position.x, Position.y + 1, Size.x, Size.y);
+    return world.OverlapsSolid(probe);
+  }
 }

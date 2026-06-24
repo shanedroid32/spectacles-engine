@@ -151,4 +151,39 @@ public sealed class KinematicBodyMovementTests
 
     Assert.Equal(0, callbackCount);
   }
+
+  [Fact]
+  public void IsGrounded_ReturnsTrueWhenSolidIsOnePixelBelow()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    world.SetSolid(tileX: 0, tileY: 1, solid: true);
+    var body = new KinematicBody(new Int2(4, 8), new Int2(8, 8));
+
+    var grounded = body.IsGrounded(world);
+
+    Assert.True(grounded);
+  }
+
+  [Fact]
+  public void IsGrounded_ReturnsFalseWhenSpaceBelowIsEmpty()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    var body = new KinematicBody(new Int2(4, 8), new Int2(8, 8));
+
+    var grounded = body.IsGrounded(world);
+
+    Assert.False(grounded);
+  }
+
+  [Fact]
+  public void IsGrounded_DoesNotChangePosition()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    world.SetSolid(tileX: 0, tileY: 1, solid: true);
+    var body = new KinematicBody(new Int2(4, 8), new Int2(8, 8));
+
+    body.IsGrounded(world);
+
+    Assert.Equal(new Int2(4, 8), body.Position);
+  }
 }
