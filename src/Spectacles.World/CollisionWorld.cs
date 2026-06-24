@@ -2,7 +2,7 @@ using Spectacles.Platform;
 
 namespace Spectacles.World;
 
-public sealed class CollisionWorld
+public sealed class CollisionWorld : IKinematicWorld
 {
   private readonly bool[,] _solidTiles;
 
