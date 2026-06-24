@@ -19,41 +19,28 @@ public sealed class KinematicBody
 
   public MoveResult MoveH(IKinematicWorld world, int amount)
   {
-    var step = Math.Sign(amount);
-    var moved = 0;
-
-    for (int i = 0; i < Math.Abs(amount); i++)
-    {
-      var nextPosition = new Int2(Position.x + step, Position.y);
-      var nextBounds = new RectI(nextPosition.x, nextPosition.y, Size.x, Size.y);
-
-      if (world.OverlapsSolid(nextBounds))
-      {
-        return new MoveResult(amount, moved, Blocked: true);
-      }
-
-      Position = nextPosition;
-      moved += step;
-    }
-
-    return new MoveResult(amount, moved, Blocked: false);
+    return MoveByPixels(world, amount, new Int2(Math.Sign(amount), 0));
   }
 
   public MoveResult MoveV(IKinematicWorld world, int amount)
   {
-    var step = Math.Sign(amount);
+    return MoveByPixels(world, amount, new Int2(0, Math.Sign(amount)));
+  }
+
+  private MoveResult MoveByPixels(IKinematicWorld world, int amount, Int2 step)
+  {
     var moved = 0;
 
-    for (int i = 0; i < Math.Abs(amount); i++)
+    for (var i = 0; i < Math.Abs(amount); i++)
     {
-      var nextPosition = new Int2(Position.x, Position.y + step);
+      var nextPosition = new Int2(Position.x + step.x, Position.y + step.y);
       var nextBounds = new RectI(nextPosition.x, nextPosition.y, Size.x, Size.y);
 
       if (world.OverlapsSolid(nextBounds))
         return new MoveResult(amount, moved, Blocked: true);
 
       Position = nextPosition;
-      moved += step;
+      moved += step.x + step.y;
     }
 
     return new MoveResult(amount, moved, Blocked: false);

@@ -81,4 +81,18 @@ public sealed class KinematicBodyMovementTests
     Assert.Equal(new Int2(4, 16), body.Position);
     Assert.Equal(new MoveResult(Requested: -8, Moved: 0, Blocked: true), result);
   }
+
+  [Fact]
+  public void MoveH_WithZeroAmountDoesNotMove()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    var body = new KinematicBody(
+        position: new Int2(4, 4),
+        size: new Int2(8, 8));
+
+    var result = body.MoveH(world, amount: 0);
+
+    Assert.Equal(new Int2(4, 4), body.Position);
+    Assert.Equal(new MoveResult(Requested: 0, Moved: 0, Blocked: false), result);
+  }
 }
