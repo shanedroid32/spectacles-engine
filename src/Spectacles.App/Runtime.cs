@@ -1,6 +1,6 @@
 using Spectacles.App;
 
-namespace Spectacles.Platform;
+namespace Spectacles.App;
 
 public sealed class Runtime
 {

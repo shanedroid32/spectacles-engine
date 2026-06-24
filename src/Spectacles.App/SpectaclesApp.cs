@@ -1,12 +1,24 @@
-using Spectacles.Platform;
+using Foster.Framework;
 
 namespace Spectacles.App;
 
-public sealed class SpectaclesApp
+public sealed class SpectaclesApp : Foster.Framework.App
 {
   private Runtime _runtime = null!;
 
-  public void Startup()
+  public SpectaclesApp() : base(new AppConfig()
+  {
+    ApplicationName = "Spectacles",
+    WindowTitle = "Spectacles",
+    Width = 320,
+    Height = 180,
+    Resizable = true
+  })
+  {
+
+  }
+
+  protected override void Startup()
   {
     var clocks = new FakeClockSource();
     var input = new FakeInputSource();
@@ -24,8 +36,18 @@ public sealed class SpectaclesApp
     };
   }
 
-  public void FixedUpdate(FrameContext frame) { }
-  public void VariableUpdate(FrameContext frame) { }
-  public void Render(FrameContext frame) { }
-  public void Shutdown() { }
+  protected override void Update()
+  {
+
+  }
+
+  protected override void Render()
+  {
+
+  }
+
+  protected override void Shutdown()
+  {
+
+  }
 }

@@ -1,6 +1,11 @@
 ﻿using Spectacles.App;
 
-var app = new SpectaclesApp();
-app.Startup();
+internal class Program
+{
+  private static void Main(string[] args)
+  {
+    var app = new SpectaclesApp();
 
-Console.WriteLine("Spectacles runtime shell started.");
+    Console.WriteLine("Spectacles runtime shell started.");
+  }
+}
