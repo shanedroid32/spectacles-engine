@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\Spectacles.Platform\Spectacles.Platform.csproj" />
+    <ProjectReference Include="..\Spectacles.Graphics\Spectacles.Graphics.csproj" />
+    <ProjectReference Include="..\Spectacles.World\Spectacles.World.csproj" />
+    <ProjectReference Include="..\Spectacles.Gameplay\Spectacles.Gameplay.csproj" />
+    <ProjectReference Include="..\Spectacles.Simulation\Spectacles.Simulation.csproj" />
+    <ProjectReference Include="..\Spectacles.Content\Spectacles.Content.csproj" />
+    <ProjectReference Include="..\Spectacles.Tools\Spectacles.Tools.csproj" />
+    <ProjectReference Include="..\Spectacles.Game\Spectacles.Game.csproj" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+</Project>

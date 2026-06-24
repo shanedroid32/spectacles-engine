@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/Spectacles.App/Spectacles.App.csproj" />
+    <Project Path="src/Spectacles.Content/Spectacles.Content.csproj" />
+    <Project Path="src/Spectacles.Game/Spectacles.Game.csproj" />
+    <Project Path="src/Spectacles.Gameplay/Spectacles.Gameplay.csproj" />
+    <Project Path="src/Spectacles.Graphics/Spectacles.Graphics.csproj" />
+    <Project Path="src/Spectacles.Platform/Spectacles.Platform.csproj" />
+    <Project Path="src/Spectacles.Simulation/Spectacles.Simulation.csproj" />
+    <Project Path="src/Spectacles.Tools/Spectacles.Tools.csproj" />
+    <Project Path="src/Spectacles.World/Spectacles.World.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/Spectacles.Tests.Gameplay/Spectacles.Tests.Gameplay.csproj" />
+    <Project Path="tests/Spectacles.Tests.Simulation/Spectacles.Tests.Simulation.csproj" />
+    <Project Path="tests/Spectacles.Tests.World/Spectacles.Tests.World.csproj" />
+  </Folder>
+  <Folder Name="/tools/">
+    <Project Path="tools/Spectacles.ContentTool/Spectacles.ContentTool.csproj" />
+  </Folder>
+</Solution>
