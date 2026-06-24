@@ -29,7 +29,7 @@ public sealed class AvatarInputIntentTests
   }
 
   [Fact]
-  public void FixedUpdate_WithRightIntentMovesBodyRightOnePixel()
+  public void FixedUpdate_WithRightIntentMovesBodyRightBySpeed()
   {
     var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
     var body = new KinematicBody(new Int2(4, 4), new Int2(8, 8));
@@ -37,7 +37,7 @@ public sealed class AvatarInputIntentTests
 
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 1));
 
-    Assert.Equal(new Int2(5, 4), body.Position);
+    Assert.Equal(new Int2(6, 4), body.Position);
   }
 
   [Fact]
