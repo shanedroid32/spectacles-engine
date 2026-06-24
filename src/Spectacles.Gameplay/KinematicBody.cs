@@ -70,7 +70,20 @@ public sealed class KinematicBody
 
   public bool IsGrounded(IKinematicWorld world)
   {
-    var probe = new RectI(Position.x, Position.y + 1, Size.x, Size.y);
-    return world.OverlapsSolid(probe);
+    return ReadSurfaceState(world).Grounded;
+  }
+
+  public SurfaceState ReadSurfaceState(IKinematicWorld world)
+  {
+    return new SurfaceState(
+        Grounded: world.OverlapsSolid(OffsetBounds(0, 1)),
+        TouchingCeiling: world.OverlapsSolid(OffsetBounds(0, -1)),
+        TouchingLeftWall: world.OverlapsSolid(OffsetBounds(-1, 0)),
+        TouchingRightWall: world.OverlapsSolid(OffsetBounds(1, 0)));
+  }
+
+  private RectI OffsetBounds(int offsetX, int offsetY)
+  {
+    return new RectI(Position.x + offsetX, Position.y + offsetY, Size.x, Size.y);
   }
 }

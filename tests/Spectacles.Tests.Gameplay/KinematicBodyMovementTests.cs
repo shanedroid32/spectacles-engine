@@ -186,4 +186,40 @@ public sealed class KinematicBodyMovementTests
 
     Assert.Equal(new Int2(4, 8), body.Position);
   }
+
+  [Fact]
+  public void ReadSurfaceState_ReturnsContactFacts()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    world.SetSolid(tileX: 0, tileY: 1, solid: true);
+    world.SetSolid(tileX: 1, tileY: 0, solid: true);
+    var body = new KinematicBody(new Int2(8, 8), new Int2(8, 8));
+
+    var state = body.ReadSurfaceState(world);
+
+    Assert.Equal(
+        new SurfaceState(
+            Grounded: true,
+            TouchingCeiling: false,
+            TouchingLeftWall: false,
+            TouchingRightWall: true),
+        state);
+  }
+
+  [Fact]
+  public void ReadSurfaceState_ReturnsFalseWhenNothingIsTouched()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    var body = new KinematicBody(new Int2(8, 8), new Int2(8, 8));
+
+    var state = body.ReadSurfaceState(world);
+
+    Assert.Equal(
+        new SurfaceState(
+            Grounded: false,
+            TouchingCeiling: false,
+            TouchingLeftWall: false,
+            TouchingRightWall: false),
+        state);
+  }
 }
