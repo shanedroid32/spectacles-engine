@@ -1,4 +1,5 @@
 using Foster.Framework;
+using Spectacles.Platform;
 
 namespace Spectacles.App;
 
@@ -49,5 +50,24 @@ public sealed class SpectaclesApp : Foster.Framework.App
   protected override void Shutdown()
   {
 
+  }
+
+  public static RectI CalculatePresentationRect(
+    int windowWidth,
+    int windowHeight,
+    int internalWidth = 320,
+    int internalHeight = 180
+  )
+  {
+    var scaleX = windowWidth / internalWidth;
+    var scaleY = windowHeight / internalHeight;
+    var scale = Math.Max(1, Math.Min(scaleX, scaleY));
+
+    var width = internalWidth * scale;
+    var height = internalHeight * scale;
+    var x = (windowWidth - width) / 2;
+    var y = (windowHeight - height) / 2;
+
+    return new RectI(x, y, width, height);
   }
 }

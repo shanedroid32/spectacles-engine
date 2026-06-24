@@ -14,6 +14,7 @@
     <Project Path="tests/Spectacles.Tests.Gameplay/Spectacles.Tests.Gameplay.csproj" />
     <Project Path="tests/Spectacles.Tests.Simulation/Spectacles.Tests.Simulation.csproj" />
     <Project Path="tests/Spectacles.Tests.World/Spectacles.Tests.World.csproj" />
+    <Project Path="tests/Spectacles.Tests.Platform/Spectacles.Tests.Platform.csproj" />
   </Folder>
   <Folder Name="/tools/">
     <Project Path="tools/Spectacles.ContentTool/Spectacles.ContentTool.csproj" />
