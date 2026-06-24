@@ -38,4 +38,24 @@ public sealed class KinematicBody
 
     return new MoveResult(amount, moved, Blocked: false);
   }
+
+  public MoveResult MoveV(IKinematicWorld world, int amount)
+  {
+    var step = Math.Sign(amount);
+    var moved = 0;
+
+    for (int i = 0; i < Math.Abs(amount); i++)
+    {
+      var nextPosition = new Int2(Position.x, Position.y + step);
+      var nextBounds = new RectI(nextPosition.x, nextPosition.y, Size.x, Size.y);
+
+      if (world.OverlapsSolid(nextBounds))
+        return new MoveResult(amount, moved, Blocked: true);
+
+      Position = nextPosition;
+      moved += step;
+    }
+
+    return new MoveResult(amount, moved, Blocked: false);
+  }
 }
