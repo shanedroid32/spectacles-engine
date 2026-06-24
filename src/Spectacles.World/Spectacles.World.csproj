@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Spectacles.Content\Spectacles.Content.csproj" />
+    <ProjectReference Include="..\Spectacles.Platform\Spectacles.Platform.csproj" />
   </ItemGroup>
 
   <PropertyGroup>
