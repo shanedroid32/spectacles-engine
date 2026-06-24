@@ -21,11 +21,17 @@ public sealed class AvatarController
   {
     Velocity = new Float2(intent.MoveX * HorizontalSpeed, Velocity.Y);
 
-    var horizontal = Remainder.X + Velocity.X;
-    var moveX = (int)horizontal;
-    Remainder = new Float2(horizontal - moveX, Remainder.Y);
+    var moveX = ExtractWholePixels(Remainder.X + Velocity.X, out var nextRemainderX);
+    Remainder = new Float2(nextRemainderX, Remainder.Y);
 
     Body.MoveH(world, moveX);
     LastSurfaceState = Body.ReadSurfaceState(world);
+  }
+
+  private static int ExtractWholePixels(float amount, out float remiander)
+  {
+    var wholePixels = (int)amount;
+    remiander = amount - wholePixels;
+    return wholePixels;
   }
 }
