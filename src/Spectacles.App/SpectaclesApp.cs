@@ -5,6 +5,7 @@ namespace Spectacles.App;
 
 public sealed class SpectaclesApp : Foster.Framework.App
 {
+  private readonly InputBindings _bindings = new();
   private Runtime _runtime = null!;
   private Presentation _presentation = null!;
   private int _frameIndex;
@@ -88,5 +89,13 @@ public sealed class SpectaclesApp : Foster.Framework.App
       VariableDeltaSeconds: _runtime.Clocks.VariableDeltaSeconds,
       InterpolationAlpha: _runtime.Clocks.InterpolationAlpha
     );
+  }
+
+  private void AdvanceInputForTestingOnly()
+  {
+    var rawKeysDown = new[] { RawKey.Space };
+    var actionsDown = _bindings.MapKeys(rawKeysDown);
+
+    _runtime.Input.BeginFrame(actionsDown);
   }
 }
