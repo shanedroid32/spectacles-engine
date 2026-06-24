@@ -6,6 +6,7 @@ namespace Spectacles.Gameplay;
 public sealed class AvatarController
 {
   private const float HorizontalSpeed = 1.5f;
+  private const float Gravity = 0.5f;
 
   public AvatarController(KinematicBody body)
   {
@@ -19,7 +20,7 @@ public sealed class AvatarController
 
   public void FixedUpdate(IKinematicWorld world, AvatarInputIntent intent = default)
   {
-    Velocity = new Float2(intent.MoveX * HorizontalSpeed, Velocity.Y);
+    Velocity = new Float2(intent.MoveX * HorizontalSpeed, Velocity.Y + Gravity);
 
     var moveX = ExtractWholePixels(Remainder.X + Velocity.X, out var nextRemainderX);
     var moveY = ExtractWholePixels(Remainder.Y + Velocity.Y, out var nextRemainderY);

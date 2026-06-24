@@ -55,7 +55,7 @@ public sealed class AvatarControllerTests
 
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: -1));
 
-    Assert.Equal(new Float2(-1.5f, 0f), controller.Velocity);
+    Assert.Equal(new Float2(-1.5f, 0.5f), controller.Velocity);
   }
 
   [Fact]
@@ -68,7 +68,7 @@ public sealed class AvatarControllerTests
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 1));
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
 
-    Assert.Equal(new Float2(0f, 0f), controller.Velocity);
+    Assert.Equal(new Float2(0f, 1f), controller.Velocity);
   }
 
   [Fact]
@@ -81,12 +81,12 @@ public sealed class AvatarControllerTests
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 1));
 
     Assert.Equal(new Int2(5, 4), body.Position);
-    Assert.Equal(new Float2(0.5f, 0f), controller.Remainder);
+    Assert.Equal(new Float2(0.5f, 0.5f), controller.Remainder);
 
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 1));
 
-    Assert.Equal(new Int2(7, 4), body.Position);
-    Assert.Equal(new Float2(0f, 0f), controller.Remainder);
+    Assert.Equal(new Int2(7, 5), body.Position);
+    Assert.Equal(new Float2(0f, 0.5f), controller.Remainder);
   }
 
   [Fact]
@@ -100,7 +100,7 @@ public sealed class AvatarControllerTests
 
     Assert.Equal(5, body.Position.x);
     Assert.Equal(4, body.Position.y);
-    Assert.Equal(new Float2(0.5f, 0f), controller.Remainder);
+    Assert.Equal(new Float2(0.5f, 0.5f), controller.Remainder);
   }
 
   [Fact]
@@ -113,8 +113,8 @@ public sealed class AvatarControllerTests
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
 
     Assert.Equal(new Int2(4, 4), body.Position);
-    Assert.Equal(new Float2(0f, 0f), controller.Velocity);
-    Assert.Equal(new Float2(0f, 0f), controller.Remainder);
+    Assert.Equal(new Float2(0f, 0.5f), controller.Velocity);
+    Assert.Equal(new Float2(0f, 0.5f), controller.Remainder);
   }
 
   [Fact]
@@ -127,16 +127,16 @@ public sealed class AvatarControllerTests
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: -1));
 
     Assert.Equal(new Int2(7, 4), body.Position);
-    Assert.Equal(new Float2(-0.5f, 0f), controller.Remainder);
+    Assert.Equal(new Float2(-0.5f, 0.5f), controller.Remainder);
 
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: -1));
 
-    Assert.Equal(new Int2(5, 4), body.Position);
-    Assert.Equal(new Float2(0f, 0f), controller.Remainder);
+    Assert.Equal(new Int2(5, 5), body.Position);
+    Assert.Equal(new Float2(0f, 0.5f), controller.Remainder);
   }
 
   [Fact]
-  public void FixedUpdate_WithoutVerticalForcesKeepsVerticalVelocityZero()
+  public void FixedUpdate_WithHorizontalIntentStillAppliesGravityToVelocity()
   {
     var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
     var body = new KinematicBody(new Int2(4, 4), new Int2(8, 8));
@@ -144,11 +144,11 @@ public sealed class AvatarControllerTests
 
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 1));
 
-    Assert.Equal(new Float2(1.5f, 0f), controller.Velocity);
+    Assert.Equal(new Float2(1.5f, 0.5f), controller.Velocity);
   }
 
   [Fact]
-  public void FixedUpdate_WithoutVerticalForcesKeepsVerticalRemainderZero()
+  public void FixedUpdate_WithHorizontalIntentStillAccumulatesVerticalRemainder()
   {
     var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
     var body = new KinematicBody(new Int2(4, 4), new Int2(8, 8));
@@ -156,6 +156,49 @@ public sealed class AvatarControllerTests
 
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 1));
 
-    Assert.Equal(new Float2(0.5f, 0f), controller.Remainder);
+    Assert.Equal(new Float2(0.5f, 0.5f), controller.Remainder);
+  }
+
+  [Fact]
+  public void FixedUpdate_AppliesGravityToVerticalVelocity()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    var body = new KinematicBody(new Int2(4, 4), new Int2(8, 8));
+    var controller = new AvatarController(body);
+
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+
+    Assert.Equal(new Float2(0f, 0.5f), controller.Velocity);
+  }
+
+  [Fact]
+  public void FixedUpdate_AccumulatesGravityAcrossFixedTicks()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    var body = new KinematicBody(new Int2(4, 4), new Int2(8, 8));
+    var controller = new AvatarController(body);
+
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+
+    Assert.Equal(new Float2(0f, 1f), controller.Velocity);
+  }
+
+  [Fact]
+  public void FixedUpdate_UsesVerticalRemainderWhenFalling()
+  {
+    var world = new CollisionWorld(width: 4, height: 4, tileSize: 16);
+    var body = new KinematicBody(new Int2(4, 4), new Int2(8, 8));
+    var controller = new AvatarController(body);
+
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+
+    Assert.Equal(new Int2(4, 4), body.Position);
+    Assert.Equal(new Float2(0f, 0.5f), controller.Remainder);
+
+    controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 0));
+
+    Assert.Equal(new Int2(4, 5), body.Position);
+    Assert.Equal(new Float2(0f, 0.5f), controller.Remainder);
   }
 }
