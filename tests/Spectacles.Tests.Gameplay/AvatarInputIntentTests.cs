@@ -37,7 +37,7 @@ public sealed class AvatarInputIntentTests
 
     controller.FixedUpdate(world, new AvatarInputIntent(MoveX: 1));
 
-    Assert.Equal(new Int2(6, 4), body.Position);
+    Assert.Equal(new Int2(5, 4), body.Position);
   }
 
   [Fact]
