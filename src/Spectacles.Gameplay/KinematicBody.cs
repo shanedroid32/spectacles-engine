@@ -45,6 +45,6 @@ public sealed class KinematicBody
       moved += step.x + step.y;
     }
 
-    return new MoveResult(amount, moved, Blocked: false, blockedDirection);
+    return new MoveResult(amount, moved, Blocked: false, CollisionDirection.None);
   }
 }

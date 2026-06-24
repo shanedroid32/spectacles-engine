@@ -34,7 +34,7 @@ public sealed class KinematicBodyMovementTests
     var result = body.MoveH(world, amount: 8);
 
     Assert.Equal(new Int2(8, 4), body.Position);
-    Assert.Equal(new MoveResult(Requested: 8, Moved: 4, Blocked: true, Direction: CollisionDirection.None),
+    Assert.Equal(new MoveResult(Requested: 8, Moved: 4, Blocked: true, Direction: CollisionDirection.Right),
     result);
   }
 
@@ -66,7 +66,7 @@ public sealed class KinematicBodyMovementTests
     var result = body.MoveV(world, amount: 8);
 
     Assert.Equal(new Int2(4, 8), body.Position);
-    Assert.Equal(new MoveResult(Requested: 8, Moved: 4, Blocked: true, Direction: CollisionDirection.None),
+    Assert.Equal(new MoveResult(Requested: 8, Moved: 4, Blocked: true, Direction: CollisionDirection.Down),
     result);
   }
 
@@ -83,7 +83,7 @@ public sealed class KinematicBodyMovementTests
     var result = body.MoveV(world, amount: -8);
 
     Assert.Equal(new Int2(4, 16), body.Position);
-    Assert.Equal(new MoveResult(Requested: -8, Moved: 0, Blocked: true, Direction: CollisionDirection.None),
+    Assert.Equal(new MoveResult(Requested: -8, Moved: 0, Blocked: true, Direction: CollisionDirection.Up),
     result);
   }
 
