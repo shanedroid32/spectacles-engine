@@ -28,7 +28,7 @@ public sealed class SpectaclesApp : Foster.Framework.App
       windowHeight: 720
     );
 
-    var clocks = new FakeClockSource();
+    var clocks = new Clocks(fixedStepHz: 120);
     var input = new FakeInputSource();
     var content = new FakeContentStore();
     var world = new FakeWorldHost();
