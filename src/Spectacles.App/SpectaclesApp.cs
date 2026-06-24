@@ -39,7 +39,7 @@ public sealed class SpectaclesApp : Foster.Framework.App
     {
       Presentation = _presentation,
       Clocks = clocks,
-      Input = input,
+      Input = new InputSnapshot(),
       Content = content,
       World = world,
       Renderer = renderer,
