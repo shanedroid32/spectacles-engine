@@ -2,7 +2,7 @@ namespace Spectacles.Platform;
 
 public readonly record struct FrameContext(
   int FrameINdex,
-  float FixedDelta,
-  float VisualDelta,
+  float FixedDeltaSeconds,
+  float VariableDeltaSeconds,
   float InterpolationAlpha
 );

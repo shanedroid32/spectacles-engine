@@ -7,6 +7,7 @@ public sealed class SpectaclesApp : Foster.Framework.App
 {
   private Runtime _runtime = null!;
   private Presentation _presentation = null!;
+  private int _frameIndex;
 
   public SpectaclesApp() : base(new AppConfig()
   {
@@ -43,13 +44,30 @@ public sealed class SpectaclesApp : Foster.Framework.App
       World = world,
       Renderer = renderer,
     };
-
-
   }
 
   protected override void Update()
   {
+    var fixedSteps = _runtime.Clocks.BeginFrame(realDeltaSeconds: 120);
 
+    for (int i = 0; i < fixedSteps; i++)
+    {
+      var fixedFrame = CreateFrameContext();
+      FixedUpdate(fixedFrame);
+    }
+
+    var renderFrame = CreateFrameContext();
+    Render(renderFrame);
+  }
+
+  private void FixedUpdate(FrameContext frame)
+  {
+    Console.WriteLine($"fixed dt: {frame.FixedDeltaSeconds}");
+  }
+
+  private void Render(FrameContext frame)
+  {
+    Console.WriteLine($"alpha: {frame.InterpolationAlpha}");
   }
 
   protected override void Render()
@@ -60,5 +78,15 @@ public sealed class SpectaclesApp : Foster.Framework.App
   protected override void Shutdown()
   {
 
+  }
+
+  private FrameContext CreateFrameContext()
+  {
+    return new FrameContext(
+      FrameINdex: _frameIndex++,
+      FixedDeltaSeconds: _runtime.Clocks.FixedDeltaSeconds,
+      VariableDeltaSeconds: _runtime.Clocks.VariableDeltaSeconds,
+      InterpolationAlpha: _runtime.Clocks.InterpolationAlpha
+    );
   }
 }
