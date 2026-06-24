@@ -1,4 +1,4 @@
-namespace Spectacles.App;
+namespace Spectacles.Platform;
 
 public interface IClockSource { }
 public interface IInputSource { }

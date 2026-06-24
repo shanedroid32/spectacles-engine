@@ -1,4 +1,4 @@
-namespace Spectacles.App;
+namespace Spectacles.Platform;
 
 public sealed class FakeClockSource : IClockSource { }
 public sealed class FakeInputSource : IInputSource { }

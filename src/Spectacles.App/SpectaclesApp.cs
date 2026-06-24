@@ -6,6 +6,7 @@ namespace Spectacles.App;
 public sealed class SpectaclesApp : Foster.Framework.App
 {
   private Runtime _runtime = null!;
+  private Presentation _presentation = null!;
 
   public SpectaclesApp() : base(new AppConfig()
   {
@@ -21,6 +22,12 @@ public sealed class SpectaclesApp : Foster.Framework.App
 
   protected override void Startup()
   {
+    _presentation = new Presentation(
+      new Presentation.PresentationConfig(),
+      windowWidth: 1280,
+      windowHeight: 720
+    );
+
     var clocks = new FakeClockSource();
     var input = new FakeInputSource();
     var content = new FakeContentStore();
@@ -29,12 +36,15 @@ public sealed class SpectaclesApp : Foster.Framework.App
 
     _runtime = new Runtime
     {
+      Presentation = _presentation,
       Clocks = clocks,
       Input = input,
       Content = content,
       World = world,
       Renderer = renderer,
     };
+
+
   }
 
   protected override void Update()
@@ -50,24 +60,5 @@ public sealed class SpectaclesApp : Foster.Framework.App
   protected override void Shutdown()
   {
 
-  }
-
-  public static RectI CalculatePresentationRect(
-    int windowWidth,
-    int windowHeight,
-    int internalWidth = 320,
-    int internalHeight = 180
-  )
-  {
-    var scaleX = windowWidth / internalWidth;
-    var scaleY = windowHeight / internalHeight;
-    var scale = Math.Max(1, Math.Min(scaleX, scaleY));
-
-    var width = internalWidth * scale;
-    var height = internalHeight * scale;
-    var x = (windowWidth - width) / 2;
-    var y = (windowHeight - height) / 2;
-
-    return new RectI(x, y, width, height);
   }
 }

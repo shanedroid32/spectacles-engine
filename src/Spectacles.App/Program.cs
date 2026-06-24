@@ -5,6 +5,7 @@ internal class Program
   private static void Main(string[] args)
   {
     var app = new SpectaclesApp();
+    app.Run();
 
     Console.WriteLine("Spectacles runtime shell started.");
   }

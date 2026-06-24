@@ -1,4 +1,4 @@
-namespace Spectacles.App;
+namespace Spectacles.Platform;
 
 public readonly record struct FrameContext(
   int FrameINdex,
